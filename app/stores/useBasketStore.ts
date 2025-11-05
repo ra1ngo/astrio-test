@@ -1,82 +1,72 @@
 import type { IClientProductConfigurable } from '@/types/clientProductConfigurable';
-import type { IPurchasedProductData } from '../types/purchasedProductData';
-import type { MaybeRef, Ref } from 'vue';
+import type { Ref } from 'vue';
+
+interface IBasketRecord {
+    product: IClientProductConfigurable;
+    count: number;
+}
 
 export const useBasketStore = defineStore('useBasketStore', () => {
-    const basketProducts = ref(new Array<IPurchasedProductData>());
+    const basketRecords = ref(new Array<IBasketRecord>());
 
-    const count = computed(() => {
-        let countTotal = 0;
+    const count = computed(() => basketRecords.value.reduce((acc, cur) => acc + cur.count, 0));
+    const subtotal = computed(() => basketRecords.value.reduce(
+        (acc, cur) => acc + cur.product.regular_price.value * cur.count,
+        0,
+    ));
 
-        for (const data of basketProducts.value) {
-            countTotal += data.count;
-        }
-
-        return countTotal;
-    });
-
-    const subtotal = computed(() => {
-       let priceTotal = 0;
-
-        for (const data of basketProducts.value) {
-            priceTotal += data.productData.regular_price.value * data.count;
-        }
-
-        return priceTotal;
-    });
-
-    function findBasketProduct(product: IClientProductConfigurable) {
-        return basketProducts.value.find(d => d.productData.id == product.id && d.productData.selectedVariant?.product.id === product.selectedVariant?.product.id);
+    function findBasketRecord(product: IClientProductConfigurable) {
+        return basketRecords.value.find(r => r.product.id == product.id);
+        // return basketRecords.value.find(d => d.product.id == product.id && d.product.selectedVariant?.product.id === product.selectedVariant?.product.id);
     }
 
-    function add(product: MaybeRef<IClientProductConfigurable>) {
-        const productNormalized = unref(product);
-        const basketData = findBasketProduct(productNormalized);
+    function add(product: IClientProductConfigurable) {
+        const basketRecord = findBasketRecord(product);
 
-        if (!basketData) {
-            basketProducts.value.push({
-                productData: productNormalized,
-                count: 1,
-            });
-
+        if (!basketRecord) {
+            basketRecords.value.push({ product, count: 1});
             return;
         }
 
-        basketData.count++;
+        basketRecord.count++;
     }
 
     function remove(product: IClientProductConfigurable) {
-        basketProducts.value = basketProducts.value.filter(d => d.productData.id == product.id && d.productData.selectedVariant?.product.id === product.selectedVariant?.product.id);
+        const arrIndex = basketRecords.value.findIndex(d => d.product.id == product.id);
+        if (arrIndex === -1) {
+            throw new Error(`Product ${product.id} not found`);
+        }
+
+        basketRecords.value.splice(arrIndex, 1);
+        //basketRecords.value = basketRecords.value.filter(d => d.product.id == product.id && d.product.selectedVariant?.product.id === product.selectedVariant?.product.id);
     }
 
     function increaseCount(product: IClientProductConfigurable) {
-        const basketData = findBasketProduct(product);
-
-        if (!basketData) {
+        const basketRecord = findBasketRecord(product);
+        if (!basketRecord) {
             throw new Error(`Product ${product.id} not found`);
         }
 
-        basketData.count++;
+        basketRecord.count++;
     }
 
     function decreaseCount(product: IClientProductConfigurable) {
-        const basketData = findBasketProduct(product);
-
-        if (!basketData) {
+        const basketRecord = findBasketRecord(product);
+        if (!basketRecord) {
             throw new Error(`Product ${product.id} not found`);
         }
 
-        if (basketData.count > 0) {
-            basketData.count--;
+        if (basketRecord.count > 0) {
+            basketRecord.count--;
         }
     }
 
     function clear() {
-        basketProducts.value = [];
+        basketRecords.value = [];
     }
 
-    const isCleared = computed(() => basketProducts.value.length == 0);
-    const isEmpty = computed(() => !isCleared.value && count.value == 0);
+    const isCleared = computed(() => basketRecords.value.length == 0);
+    const isEmpty = computed(() => count.value == 0);
 
     return {
         count,
@@ -88,7 +78,7 @@ export const useBasketStore = defineStore('useBasketStore', () => {
         decreaseCount,
         isCleared,
         isEmpty,
-        basketProducts: basketProducts as unknown as Readonly<Ref<IPurchasedProductData[]>>, // pinia-plugin-persistedstate не дружит с утилем readonly из vue3
+        basketRecords: basketRecords as unknown as Readonly<Ref<IBasketRecord[]>>, // pinia-plugin-persistedstate не дружит с утилем readonly из vue3
     };
 }, { persist: true },
 );

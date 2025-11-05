@@ -12,26 +12,26 @@
         </div>
 
         <div
-          v-for="data in basketProducts"
-          :key="data.productData.id"
+          v-for="basketRecord in basketRecords"
+          :key="basketRecord.product.id"
           class="page-cart__table-row"
         >
           <div class="page-cart__table-row-item">
-            <BasketTableItemProduct :product="data.productData" />
+            <BasketTableItemProduct :product="basketRecord.product" />
           </div>
           <div class="page-cart__table-row-price">
-            {{ formatCurrency(data.productData.regular_price.value, data.productData.regular_price.currency) }}
+            {{ formatCurrency(basketRecord.product.regular_price.value, basketRecord.product.regular_price.currency) }}
           </div>
           <div class="page-cart__table-row-qty">
-            {{data.count}}
-            <button @click="increaseCount(data.productData)">+</button>
-            <button @click="decreaseCount(data.productData)">-</button>
+            {{basketRecord.count}}
+            <button @click="increaseCount(basketRecord.product)">+</button>
+            <button @click="decreaseCount(basketRecord.product)">-</button>
           </div>
           <div class="page-cart__table-row-total">
-            {{ formatCurrency(data.productData.regular_price.value, data.productData.regular_price.currency, data.count) }}
+            {{ formatCurrency(basketRecord.product.regular_price.value, basketRecord.product.regular_price.currency, basketRecord.count) }}
           </div>
           <div class="page-cart__table-row-trash">
-            <UIIcon class="page-cart__table-row-trash-icon" name="trash" @click="remove(data.productData)"/>
+            <UIIcon class="page-cart__table-row-trash-icon" name="trash" @click="remove(basketRecord.product)"/>
           </div>
         </div>
       </div>
@@ -58,7 +58,7 @@ definePageMeta({
 
 const router = useRouter();
 const basketStore = useBasketStore();
-const { subtotal, basketProducts, isCleared, isEmpty } = storeToRefs(basketStore);
+const { subtotal, basketRecords, isCleared, isEmpty } = storeToRefs(basketStore);
 const { increaseCount, decreaseCount, remove, clear } = basketStore;
 
 function onClickSubmit() {

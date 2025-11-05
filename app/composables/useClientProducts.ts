@@ -6,8 +6,8 @@ export function useClientProducts(brands: Array<IApiBrand>, products: Array<IApi
     const mapProduct = (product: IApiProductConfigurable): IClientProductConfigurable => {
         return {
             ...product,
-            imageUrl: product.image,
-            brandData: brands.find(brand => brand.id == product.brand),
+            clientImageUrl: product.image,
+            clientBrand: brands.find(brand => brand.id == product.brand),
         };
     };
 

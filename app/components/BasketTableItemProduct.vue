@@ -2,11 +2,11 @@
   <div class="basket-table-item-product">
     <img
         class="basket-table-item-product__image"
-        :src="product.imageUrl"
+        :src="product.clientImageUrl"
         :alt="`${product.title} Image`" >
 
     <span class="basket-table-item-product__title">{{title}}</span>
-    <div v-if="product.selectedVariant" class="basket-table-item-product__variant">
+    <div v-if="product.clientSelectedVariant" class="basket-table-item-product__variant">
       <span class="basket-table-item-product__variant-label">{{selectedVariantColorLabel}}</span>
       <span class="basket-table-item-product__variant-label">{{selectedVariantSizeLabel}}</span>
     </div>
@@ -21,15 +21,15 @@ const { product } = defineProps<{
 }>();
 
 const title = computed(() => {
-  if (product.brandData?.title) {
-    return `${product.brandData.title} / ${product.title}`;
+  if (product.clientBrand?.title) {
+    return `${product.clientBrand.title} / ${product.title}`;
   }
 
   return product.title;
 });
 
 const selectedVariantColorLabel = computed(() => {
-  const optionId = product.selectedVariant?.attributes.find(s => s.code === 'color')?.value_index;
+  const optionId = product.clientSelectedVariant?.attributes.find(s => s.code === 'color')?.value_index;
   const optionDesc = product.configurable_options?.find(c => c.attribute_code === 'color');
   const optionValue = optionDesc?.values.find(c => c.value_index == optionId);
 
@@ -38,7 +38,7 @@ const selectedVariantColorLabel = computed(() => {
 });
 
 const selectedVariantSizeLabel = computed(() => {
-  const optionId = product.selectedVariant?.attributes.find(s => s.code === 'size')?.value_index;
+  const optionId = product.clientSelectedVariant?.attributes.find(s => s.code === 'size')?.value_index;
   const optionDesc = product.configurable_options?.find(c => c.attribute_code === 'size');
   const optionValue = optionDesc?.values.find(c => c.value_index == optionId);
 

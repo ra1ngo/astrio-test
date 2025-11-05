@@ -1,13 +1,25 @@
 import type { IApiProductConfigurable } from '@/types/apiProductConfigurable';
 import productsJson from '@/assets/data/products.json';
 
+// eslint-disable-next-line
+function fixImagePath(data: any) {
+    for(const key in data) {
+        if(typeof data[key] === 'object') {
+            fixImagePath(data[key]);
+        } else if (key == 'image') {
+            data['image'] = (data['image'] as string).replace('/image/', '/images/');
+        }
+    }
+
+    return data;
+}
+
 /**
- * Здесь компануем запросы по Rest-принципу, кэшируем ответы и т.п.
- * Для упрощения json передается как есть. С приведением к типу
+ * Здесь типа компануем запросы по Rest-принципу, кэшируем ответы и т.п.
  */
 export function useApiProducts() {
     function getProducts(){
-        return productsJson as Array<IApiProductConfigurable>;
+        return fixImagePath(productsJson as Array<IApiProductConfigurable>);    // Бэкендеры опять напортачили
     }
 
     return {

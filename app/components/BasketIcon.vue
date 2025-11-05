@@ -9,16 +9,11 @@
 import UIIcon from './UIIcon.vue';
 
 const { count } = defineProps<{ count: number; }>();
-
-const emit = defineEmits<{
-  (eventName: 'click'): void,
-}>();
+const emit = defineEmits<{ click: [] }>();
 
 const isDisabled = computed(() => count <= 0);
 const iconColor = computed(() => isDisabled.value ? '#808080' : '#000000');
-const cssVariables = computed(() => ({
-  '--basket-icon-cursor': isDisabled.value ? 'not-allowed' : 'pointer',
-}));
+const cssVariables = computed(() => ({ '--basket-icon-cursor': isDisabled.value ? 'not-allowed' : 'pointer' }));
 const countText = computed(() => count < 100 ? count : '!!!');  // TODO допилить переполнение
 
 function onClick() {

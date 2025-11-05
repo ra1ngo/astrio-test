@@ -2,12 +2,12 @@
   <figure class="product-card">
     <img
         class="product-card__image"
-        :src="product.imageUrl"
+        :src="product.clientImageUrl"
         :alt="`${product.title} Image`" >
 
     <figcaption class="product-card__description">
       <strong class="product-card__description-title">{{product.title}}</strong>
-      <span v-if="product.brandData" class="product-card__description-brand">{{product.brandData.title}}</span>
+      <span v-if="product.clientBrand" class="product-card__description-brand">{{ product.clientBrand.title }}</span>
       <span class="product-card__description-currency">{{currencyLabel}}</span>
     </figcaption>
   </figure>

@@ -1,7 +1,7 @@
 import type { IClientProductConfigurable } from '@/types/clientProductConfigurable';
 import type { Ref} from 'vue';
 
-export function useFilterProducts(products: Ref<IClientProductConfigurable[]>) {
+export function useClientProductsFilter(products: Ref<IClientProductConfigurable[]>) {
     const selectedBrands = useState<Array<number>>('selectedBrands', () => []);
 
     const filteredProducts = computed<IClientProductConfigurable[]>(() => {

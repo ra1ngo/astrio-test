@@ -12,16 +12,17 @@
     </template>
 
     <template #main>
-      <ProductList :products="filteredProducts" @on-click-product="add" @configure-product="configureProduct" />
+      <ProductList :products="filteredProducts" @on-click-product="add" />
     </template>
   </NuxtLayout>
 </template>
 
 <script lang="ts" setup>
+import { useClientProductsFilter } from '@/composables/useClientProductsFilter';
+import { useClientProducts } from '@/composables/useClientProducts';
 import { useBasketStore } from '@/stores/useBasketStore';
-import { useProducts } from '@/composables/useProducts';
+import { useApiProducts } from '@/api/useApiProducts';
 import BasketIcon from '@/components/BasketIcon.vue';
-import {useApiProducts} from '@/api/useApiProducts';
 import { useApiBrands } from '@/api/useApiBrands';
 
 const router = useRouter();
@@ -34,7 +35,8 @@ const { getBrands } = useApiBrands();
 const { getProducts } = useApiProducts();
 const brands = getBrands();
 const products = getProducts();
-const { filteredProducts, selectedBrands, configureProduct } = useProducts(brands, products);
+const { clientProducts } = useClientProducts(brands, products);
+const { filteredProducts, selectedBrands } = useClientProductsFilter(clientProducts);
 
 function onBasketClick() {
   router.push({ path: '/cart' });
