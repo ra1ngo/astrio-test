@@ -1,7 +1,7 @@
 {
   "name": "astrio-test",
   "type": "module",
-  "private": true,
+  "private": false,
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -10,13 +10,14 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@iconify-json/material-symbols": "^1.2.44",
     "@nuxt/eslint": "^1.10.0",
+    "@nuxt/ui": "^4.1.0",
     "@pinia/nuxt": "^0.11.2",
     "@vueuse/core": "^14.0.0",
     "@vueuse/nuxt": "^14.0.0",
     "eslint": "^9.38.0",
     "nuxt": "^4.2.0",
-    "nuxt-icons": "^4.0.0",
     "pinia": "^3.0.3",
     "pinia-plugin-persistedstate": "^4.5.0",
     "vue": "^3.5.22",

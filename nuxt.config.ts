@@ -2,11 +2,17 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['@nuxt/eslint', 'nuxt-icons', '@pinia/nuxt', 'pinia-plugin-persistedstate', '@vueuse/nuxt'],
+  modules: ['@nuxt/eslint', '@nuxt/ui', '@pinia/nuxt', 'pinia-plugin-persistedstate/nuxt', '@vueuse/nuxt'],
   app: {
     head: {
       title: 'Astrio test',
     },
   },
-  css: ['~/assets/css/reset.css'],
+  css: ['~/assets/css/main.css'],
+  icon: {
+    mode: 'svg',
+  },
+  // piniaPluginPersistedstate: {
+  //   storage: 'localStorage',
+  // },
 });

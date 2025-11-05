@@ -1,14 +1,16 @@
 <template>
-  <div class="basket-table-item-product">
+  <div class="basket-table-cell-product">
     <img
-        class="basket-table-item-product__image"
+        class="basket-table-cell-product__image"
         :src="product.clientImageUrl"
         :alt="`${product.title} Image`" >
 
-    <span class="basket-table-item-product__title">{{title}}</span>
-    <div v-if="product.clientSelectedVariant" class="basket-table-item-product__variant">
-      <span class="basket-table-item-product__variant-label">{{selectedVariantColorLabel}}</span>
-      <span class="basket-table-item-product__variant-label">{{selectedVariantSizeLabel}}</span>
+    <div class="basket-table-cell-product__info">
+      <span class="basket-table-cell-product__info-title">{{title}}</span>
+      <div v-if="product.clientSelectedVariant" class="basket-table-cell-product__info-variant">
+        <span class="basket-table-cell-product__info-variant-label">{{selectedVariantColorLabel}}</span>
+        <span class="basket-table-cell-product__info-variant-label">{{selectedVariantSizeLabel}}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -48,25 +50,29 @@ const selectedVariantSizeLabel = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-.basket-table-item-product {
-
+.basket-table-cell-product {
+  display: flex;
+  align-items: center;
+  margin-left: -20px;
 }
 
-.basket-table-item-product__image {
-
+.basket-table-cell-product__image {
+  width: 100px;
+  height: 100px;
 }
 
-.basket-table-item-product__title {
-
+.basket-table-cell-product__info-title {
+  font-size: 16px;
+  font-weight: bold;
 }
 
-.basket-table-item-product__variant {
+.basket-table-cell-product__info-variant {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.basket-table-item-product__variant-label {
+.basket-table-cell-product__info-variant-label {
 
 }
 </style>

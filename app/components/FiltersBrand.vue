@@ -1,17 +1,23 @@
 <template>
-  <div class="filters-brand">
-    <p class="filters-brand__title">All Brands</p>
-    <ul class="filters-brand__list">
-      <li
-          v-for="brand in brands"
-          :key="brand.id"
-          class="filters-brand__list-item"
-          @click="selectBrand(brand.id)"
-      >
-        {{ brand.title }}
-      </li>
-    </ul>
-  </div>
+  <UCard class="filters-brand">
+    <template #header>
+      <span class="filters-brand__title">All Brands</span>
+    </template>
+
+    <template #default>
+      <div class="filters-brand__list">
+        <UCheckbox
+            v-for="brand in brands"
+            :key="brand.id"
+            :label="brand.title"
+            :model-value="selectedBrands.includes(brand.id)"
+            class="filters-brand__list-item"
+            size="lg"
+            @click="selectBrand(brand.id)"
+        />
+      </div>
+    </template>
+  </UCard>
 </template>
 
 <script lang="ts" setup>
@@ -33,18 +39,21 @@ function selectBrand(brandId: number) {
 }
 </script>
 
-
 <style lang="scss" scoped>
 .filters-brand {
 
 }
 
 .filters-brand__title {
-
+  font-weight: 600;
+  font-size: 16px;
 }
 
 .filters-brand__list {
-
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
 }
 
 .filters-brand__list-item {

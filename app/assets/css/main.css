@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+:root {
+    --ui-container: 95rem;
+}
+
+body {
+    @apply bg-gray-100;
+}

@@ -1,56 +1,32 @@
 <template>
-  <NuxtLayout name="cart">
-    <div class="page-cart">
-      <h1 class="page-cart__title">Shopping Cart</h1>
+  <UPage class="page-cart">
+    <UPageHeader title="Shopping Cart" />
+    <UPageBody>
+      <UPageCard class="page-cart__body-card">
+        <BasketTable
+            :basket-records="basketRecords"
+            @increase-count="increaseCount"
+            @decrease-count="decreaseCount"
+            @change-count="changeCount"
+            @remove="remove"
+        />
 
-      <div class="page-cart__table">
-        <div class="page-cart__table-header">
-          <div class="page-cart__table-header-item">Item</div>
-          <div class="page-cart__table-header-price">Price</div>
-          <div class="page-cart__table-header-qty">Qty</div>
-          <div class="page-cart__table-header-total">Total</div>
+        <USeparator />
+
+        <div class="page-cart__controls">
+          <strong class="page-cart__controls-subtotal">
+            Subtotal: {{ formatCurrency(subtotal, 'USD') }}
+          </strong>
+          <UButton class="page-cart__controls-submit" trailing-icon="i-material-symbols-add-card" size="xl" @click="onClickSubmit">Checkout</UButton>
         </div>
-
-        <div
-          v-for="basketRecord in basketRecords"
-          :key="basketRecord.product.id"
-          class="page-cart__table-row"
-        >
-          <div class="page-cart__table-row-item">
-            <BasketTableItemProduct :product="basketRecord.product" />
-          </div>
-          <div class="page-cart__table-row-price">
-            {{ formatCurrency(basketRecord.product.regular_price.value, basketRecord.product.regular_price.currency) }}
-          </div>
-          <div class="page-cart__table-row-qty">
-            {{basketRecord.count}}
-            <button @click="increaseCount(basketRecord.product)">+</button>
-            <button @click="decreaseCount(basketRecord.product)">-</button>
-          </div>
-          <div class="page-cart__table-row-total">
-            {{ formatCurrency(basketRecord.product.regular_price.value, basketRecord.product.regular_price.currency, basketRecord.count) }}
-          </div>
-          <div class="page-cart__table-row-trash">
-            <UIIcon class="page-cart__table-row-trash-icon" name="trash" @click="remove(basketRecord.product)"/>
-          </div>
-        </div>
-      </div>
-
-      <div class="page-cart__controls">
-        <strong class="page-cart__controls-subtotal">
-          Subtotal: {{ formatCurrency(subtotal, 'USD') }}
-        </strong>
-        <button class="page-cart__controls-submit" @click="onClickSubmit">Checkout</button>
-      </div>
-    </div>
-  </NuxtLayout>
+      </UPageCard>
+    </UPageBody>
+  </UPage>
 </template>
 
 <script lang="ts" setup>
-import BasketTableItemProduct from '@/components/BasketTableItemProduct.vue';
 import { useBasketStore } from '@/stores/useBasketStore';
 import { formatCurrency } from '@/utils/formatCurrency';
-import UIIcon from '@/components/UIIcon.vue';
 
 definePageMeta({
   middleware: ['empty-cart'],
@@ -59,7 +35,8 @@ definePageMeta({
 const router = useRouter();
 const basketStore = useBasketStore();
 const { subtotal, basketRecords, isCleared, isEmpty } = storeToRefs(basketStore);
-const { increaseCount, decreaseCount, remove, clear } = basketStore;
+const { increaseCount, decreaseCount, changeCount, remove, clear } = basketStore;
+
 
 function onClickSubmit() {
   if (isEmpty.value || isCleared.value) {
@@ -71,14 +48,34 @@ function onClickSubmit() {
 }
 
 watch(
-    isCleared,
-    (isCleared) => {
-      if (isCleared) {
-        setTimeout(() => router.push({ path: '/' }), 300);
-      }
-    },
+  isCleared,
+  (isCleared) => {
+    if (isCleared) {
+      setTimeout(() => router.push({ path: '/' }), 300);
+    }
+  },
 );
 </script>
 
 <style lang="scss" scoped>
+.page-cart__body-card {
+  min-width: fit-content;
+}
+
+.page-cart__controls {
+  margin-left: auto;
+  padding-right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.page-cart__controls-subtotal {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.page-cart__controls-submit {
+
+}
 </style>

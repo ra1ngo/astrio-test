@@ -1,16 +1,17 @@
 <template>
-  <figure class="product-card">
+  <UCard class="product-card">
     <img
         class="product-card__image"
         :src="product.clientImageUrl"
-        :alt="`${product.title} Image`" >
+        :alt="`${product.title} Image`"
+    >
 
-    <figcaption class="product-card__description">
+    <div class="product-card__description">
       <strong class="product-card__description-title">{{product.title}}</strong>
       <span v-if="product.clientBrand" class="product-card__description-brand">{{ product.clientBrand.title }}</span>
       <span class="product-card__description-currency">{{currencyLabel}}</span>
-    </figcaption>
-  </figure>
+    </div>
+  </UCard>
 </template>
 
 <script lang="ts" setup>
@@ -26,19 +27,16 @@ const currencyLabel = computed(() => formatCurrency(product.regular_price.value,
 
 <style lang="scss" scoped>
 .product-card {
-  display: inline-block;
-  background: aqua;
-  border: 2px solid black;
-  padding: 2px;
+  cursor: pointer;
 }
 
 .product-card__image {
-  border: 2px solid black;
   width: 225px;
-  height: 300px;
+  height: 260px;
 }
 
 .product-card__description {
+  margin-top: 8px;
   display: flex;
   flex-direction: column;
 }

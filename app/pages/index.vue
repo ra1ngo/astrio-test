@@ -1,20 +1,27 @@
 <template>
-  <NuxtLayout>
-    <template #controls>
+  <div>
+    <Teleport to="#app-header-control">
       <BasketIcon :count="count" @click="onBasketClick" />
-    </template>
+    </Teleport>
 
-    <template #aside>
-      <FiltersBrand
-        v-model:selected-brands="selectedBrands"
-        :brands="brands"
-      />
-    </template>
+    <UPage>
+      <template #left>
+        <UPageAside>
+          <FiltersBrand
+              v-model:selected-brands="selectedBrands"
+              :brands="brands"
+          />
+        </UPageAside>
+      </template>
 
-    <template #main>
-      <ProductList :products="filteredProducts" @on-click-product="add" />
-    </template>
-  </NuxtLayout>
+      <template #default>
+        <UPageHeader title="Catalog"/>
+        <UPageBody>
+          <ProductList :products="filteredProducts" @on-click-product="add" />
+        </UPageBody>
+      </template>
+    </UPage>
+  </div>
 </template>
 
 <script lang="ts" setup>
