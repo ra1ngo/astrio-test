@@ -30,6 +30,7 @@ const title = computed(() => {
   return product.title;
 });
 
+//TODO DRY
 const selectedVariantColorLabel = computed(() => {
   const optionId = product.clientSelectedVariant?.attributes.find(s => s.code === 'color')?.value_index;
   const optionDesc = product.configurable_options?.find(c => c.attribute_code === 'color');
@@ -71,9 +72,5 @@ const selectedVariantSizeLabel = computed(() => {
   display: flex;
   flex-direction: column;
   gap: 2px;
-}
-
-.basket-table-cell-product__info-variant-label {
-
 }
 </style>

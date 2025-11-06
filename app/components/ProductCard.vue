@@ -41,12 +41,4 @@ const currencyLabel = computed(() => formatCurrency(product.regular_price.value,
   display: flex;
   flex-direction: column;
 }
-
-.product-card__description-title {
-
-}
-
-.product-card__description-brand {
-
-}
 </style>

@@ -14,20 +14,13 @@ export interface ConfigureProductPayload {
 
 export function useProductsMappedConfigured(products: Ref<IClientProductConfigurable[]>) {
     function configureProduct(payload: ConfigureProductPayload) {
-        //const productId = products.value.findIndex(p => p.id === payload.productId);
         const product = products.value.find(p => p.id === payload.productId);
         if (!product) {
             throw new Error(`Product ${payload.productId} not found`);
         }
 
-        console.log('configureProduct', product);
-        //const normalizedProduct = structuredClone(toRaw(product));
-
         product.clientSelectedVariant = payload.selectedVariant;
         product.clientImageUrl = payload.selectedVariant ? payload.selectedVariant.product.image : product.image;
-
-        //products.value.filter(p => p.id != productId);
-        //products.value.push(product);
     }
 
     return {

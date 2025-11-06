@@ -46,8 +46,6 @@ function onClickSubmit() {
   clear();
 }
 
-console.log('basketRecords', basketRecords.value);
-
 watch(
   isCleared,
   (isCleared) => {
@@ -74,9 +72,5 @@ watch(
 .page-cart__controls-subtotal {
   font-size: 20px;
   font-weight: bold;
-}
-
-.page-cart__controls-submit {
-
 }
 </style>

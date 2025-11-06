@@ -1,7 +1,7 @@
-import {useProductsMappedConfiguredFiltered} from './useProductsMappedConfiguredFiltered';
+import { useProductsMappedConfiguredFiltered } from './useProductsMappedConfiguredFiltered';
 import type { IApiProductConfigurable } from '@/types/apiProductConfigurable';
-import {useProductsMappedConfigured} from './useProductsMappedConfigured';
-import {useProductsMapped} from './useProductsMapped';
+import { useProductsMappedConfigured } from './useProductsMappedConfigured';
+import { useProductsMapped } from './useProductsMapped';
 import type { IApiBrand } from '@/types/apiBrand';
 
 export function useProducts(brands: Array<IApiBrand>, products: Array<IApiProductConfigurable>) {

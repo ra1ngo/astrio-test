@@ -48,8 +48,4 @@ function configureProduct(payload: ConfigureProductPayload) {
   gap: 20px;
   flex-wrap: wrap;
 }
-
-.product-list__item {
-
-}
 </style>

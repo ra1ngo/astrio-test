@@ -40,10 +40,6 @@ function selectBrand(brandId: number) {
 </script>
 
 <style lang="scss" scoped>
-.filters-brand {
-
-}
-
 .filters-brand__title {
   font-weight: 600;
   font-size: 16px;
@@ -54,9 +50,5 @@ function selectBrand(brandId: number) {
   flex-direction: column;
   justify-content: center;
   gap: 8px;
-}
-
-.filters-brand__list-item {
-
 }
 </style>

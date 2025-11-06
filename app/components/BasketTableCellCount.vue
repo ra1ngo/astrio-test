@@ -26,10 +26,6 @@ function onChange(e: Event) {
   gap: 8px;
 }
 
-.basket-table-cell-count__button {
-
-}
-
 .basket-table-cell-count__input {
   width: 40px;
 }
