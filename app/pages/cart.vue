@@ -4,11 +4,11 @@
     <UPageBody>
       <UPageCard class="page-cart__body-card">
         <BasketTable
-            :basket-records="basketRecords"
-            @increase-count="increaseCount"
-            @decrease-count="decreaseCount"
-            @change-count="changeCount"
-            @remove="remove"
+          :basket-records="basketRecords"
+          @increase-count="increaseCount"
+          @decrease-count="decreaseCount"
+          @change-count="changeCount"
+          @remove="remove"
         />
 
         <USeparator />
@@ -37,7 +37,6 @@ const basketStore = useBasketStore();
 const { subtotal, basketRecords, isCleared, isEmpty } = storeToRefs(basketStore);
 const { increaseCount, decreaseCount, changeCount, remove, clear } = basketStore;
 
-
 function onClickSubmit() {
   if (isEmpty.value || isCleared.value) {
     return;
@@ -46,6 +45,8 @@ function onClickSubmit() {
   alert('Поздравляем с покупкой!!!');
   clear();
 }
+
+console.log('basketRecords', basketRecords.value);
 
 watch(
   isCleared,

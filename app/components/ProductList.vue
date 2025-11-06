@@ -19,8 +19,8 @@
 </template>
 
 <script lang="ts" setup>
+import type { ConfigureProductPayload } from '@/composables/useProductsMappedConfigured';
 import type { IClientProductConfigurable } from '@/types/clientProductConfigurable';
-import type { ConfigureProductPayload } from '@/types/configureProductPayload';
 import ProductCardConfigurable from '@/components/ProductCardConfigurable.vue';
 import ProductCard from '@/components/ProductCard.vue';
 

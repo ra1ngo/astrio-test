@@ -17,7 +17,7 @@
       <template #default>
         <UPageHeader title="Catalog"/>
         <UPageBody>
-          <ProductList :products="filteredProducts" @on-click-product="add" />
+          <ProductList :products="clientProducts" @on-click-product="add" @configure-product="configureProduct" />
         </UPageBody>
       </template>
     </UPage>
@@ -25,9 +25,8 @@
 </template>
 
 <script lang="ts" setup>
-import { useClientProductsFilter } from '@/composables/useClientProductsFilter';
-import { useClientProducts } from '@/composables/useClientProducts';
 import { useBasketStore } from '@/stores/useBasketStore';
+import { useProducts } from '@/composables/useProducts';
 import { useApiProducts } from '@/api/useApiProducts';
 import BasketIcon from '@/components/BasketIcon.vue';
 import { useApiBrands } from '@/api/useApiBrands';
@@ -42,8 +41,7 @@ const { getBrands } = useApiBrands();
 const { getProducts } = useApiProducts();
 const brands = getBrands();
 const products = getProducts();
-const { clientProducts } = useClientProducts(brands, products);
-const { filteredProducts, selectedBrands } = useClientProductsFilter(clientProducts);
+const { clientProducts, selectedBrands, configureProduct } = useProducts(brands, products);
 
 function onBasketClick() {
   router.push({ path: '/cart' });

@@ -8,7 +8,7 @@
 
 <script lang="ts" setup>
 const { count } = defineProps<{ count: number; }>();
-const emit = defineEmits<{ click: [] }>();
+const emits = defineEmits<{ click: [] }>();
 
 const isDisabled = computed(() => count <= 0);
 const cssVariables = computed(() => ({
@@ -16,13 +16,12 @@ const cssVariables = computed(() => ({
   '--basket-icon-color': isDisabled.value ? '#808080' : '#000000',
 }));
 
-
 function onClick() {
   if (isDisabled.value) {
     return;
   }
 
-  emit('click');
+  emits('click');
 }
 </script>
 

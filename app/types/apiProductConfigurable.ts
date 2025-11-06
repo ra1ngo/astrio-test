@@ -2,7 +2,7 @@ import type { IApiProduct } from './apiProduct';
 
 // При правильно настроенном конфиге ошибки ts не ломают прод
 // Если в деве возникает ошибка, значит добавился новый конфиг продукта
-type TApiProductConfigurableOptionAttributeCode = 'color' | 'size';
+export type TApiProductConfigurableOptionAttributeCode = 'color' | 'size';
 
 export interface IApiProductConfigurableOptionValue {
     label: string,
@@ -10,7 +10,7 @@ export interface IApiProductConfigurableOptionValue {
     value: string | number,
 }
 
-interface IApiProductConfigurableOption {
+export interface IApiProductConfigurableOption {
     id?: number,
     position?: number,  // Опять проект без сваггера... что за поле?
     attribute_id: number,

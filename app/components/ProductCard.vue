@@ -1,9 +1,9 @@
 <template>
   <UCard class="product-card">
     <img
-        class="product-card__image"
-        :src="product.clientImageUrl"
-        :alt="`${product.title} Image`"
+      class="product-card__image"
+      :src="product.clientImageUrl"
+      :alt="`${product.title} Image`"
     >
 
     <div class="product-card__description">
@@ -27,6 +27,7 @@ const currencyLabel = computed(() => formatCurrency(product.regular_price.value,
 
 <style lang="scss" scoped>
 .product-card {
+  height: min-content;
   cursor: pointer;
 }
 

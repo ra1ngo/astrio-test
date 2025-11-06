@@ -2,7 +2,7 @@ import type { IClientProductConfigurable } from '@/types/clientProductConfigurab
 import type { IApiProductConfigurable } from '@/types/apiProductConfigurable';
 import type { IApiBrand } from '@/types/apiBrand';
 
-export function useClientProducts(brands: Array<IApiBrand>, products: Array<IApiProductConfigurable>) {
+export function useProductsMapped(brands: Array<IApiBrand>, products: Array<IApiProductConfigurable>) {
     const mapProduct = (product: IApiProductConfigurable): IClientProductConfigurable => {
         return {
             ...product,
@@ -11,9 +11,9 @@ export function useClientProducts(brands: Array<IApiBrand>, products: Array<IApi
         };
     };
 
-    const clientProducts = useState('clientProducts', () => products.map(product => mapProduct(product)));
+    const productsMapped = useState('productsMapped', () => products.map(product => mapProduct(product)));
 
     return {
-        clientProducts,
+        productsMapped,
     };
 }

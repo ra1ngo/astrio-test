@@ -1,10 +1,10 @@
 import type { IClientProductConfigurable } from '@/types/clientProductConfigurable';
-import type { Ref} from 'vue';
+import type { Ref } from 'vue';
 
-export function useClientProductsFilter(products: Ref<IClientProductConfigurable[]>) {
+export function useProductsMappedConfiguredFiltered(products: Ref<IClientProductConfigurable[]>) {
     const selectedBrands = useState<Array<number>>('selectedBrands', () => []);
 
-    const filteredProducts = computed<IClientProductConfigurable[]>(() => {
+    const productsFiltered = computed<IClientProductConfigurable[]>(() => {
         if (selectedBrands.value.length == 0) {
             return products.value;
         }
@@ -14,6 +14,6 @@ export function useClientProductsFilter(products: Ref<IClientProductConfigurable
 
     return {
         selectedBrands,
-        filteredProducts,
+        productsFiltered,
     };
 }

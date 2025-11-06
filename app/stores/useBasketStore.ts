@@ -15,45 +15,56 @@ export const useBasketStore = defineStore('useBasketStore', () => {
         0,
     ));
 
-    function findBasketRecord(clientProduct: IClientProductConfigurable) {
-        return basketRecords.value.find(r => r.clientProduct.id == clientProduct.id);
-        // return basketRecords.value.find(d => d.clientProduct.id == clientProduct.id && d.clientProduct.selectedVariant?.clientProduct.id === clientProduct.selectedVariant?.clientProduct.id);
+    function findBasketRecord(product: IClientProductConfigurable) {
+        if (product.type == 'simple') {
+            return basketRecords.value.find(d => d.clientProduct.id == product.id);
+        }
+
+        return basketRecords.value.find(d => d.clientProduct.id == product.id && d.clientProduct.clientSelectedVariant?.product.id == product.clientSelectedVariant?.product.id);
     }
 
-    function add(clientProduct: IClientProductConfigurable) {
-        const basketRecord = findBasketRecord(clientProduct);
+    function add(product: IClientProductConfigurable) {
+        const normalizedProduct = structuredClone(toRaw(product));
+
+        const basketRecord = findBasketRecord(normalizedProduct);
+        console.log('add', {clientProduct: toRaw(product), basketRecord: toRaw(basketRecord)});
 
         if (!basketRecord) {
-            basketRecords.value.push({ clientProduct, count: 1});
+            basketRecords.value.push({clientProduct: normalizedProduct, count: 1});
             return;
         }
 
         basketRecord.count++;
     }
 
-    function remove(clientProduct: IClientProductConfigurable) {
-        const arrIndex = basketRecords.value.findIndex(d => d.clientProduct.id == clientProduct.id);
+    function remove(product: IClientProductConfigurable) {
+        const normalizedProduct = structuredClone(toRaw(product));
+        const arrIndex = basketRecords.value.findIndex(d => d.clientProduct.id == normalizedProduct.id && d.clientProduct.clientSelectedVariant?.product.id === normalizedProduct.clientSelectedVariant?.product.id);
+        //const arrIndex = basketRecords.value.findIndex(d => d.clientProduct.id == product.id);
         if (arrIndex === -1) {
-            throw new Error(`Product ${clientProduct.id} not found`);
+            throw new Error(`Product ${product.id} not found`);
         }
 
         basketRecords.value.splice(arrIndex, 1);
-        //basketRecords.value = basketRecords.value.filter(d => d.clientProduct.id == clientProduct.id && d.clientProduct.selectedVariant?.clientProduct.id === clientProduct.selectedVariant?.clientProduct.id);
     }
 
-    function increaseCount(clientProduct: IClientProductConfigurable) {
-        const basketRecord = findBasketRecord(clientProduct);
+    function increaseCount(product: IClientProductConfigurable) {
+        const normalizedProduct = structuredClone(toRaw(product));
+
+        const basketRecord = findBasketRecord(normalizedProduct);
         if (!basketRecord) {
-            throw new Error(`Product ${clientProduct.id} not found`);
+            throw new Error(`Product ${product.id} not found`);
         }
 
         basketRecord.count++;
     }
 
-    function decreaseCount(clientProduct: IClientProductConfigurable) {
-        const basketRecord = findBasketRecord(clientProduct);
+    function decreaseCount(product: IClientProductConfigurable) {
+        const normalizedProduct = structuredClone(toRaw(product));
+
+        const basketRecord = findBasketRecord(normalizedProduct);
         if (!basketRecord) {
-            throw new Error(`Product ${clientProduct.id} not found`);
+            throw new Error(`Product ${product.id} not found`);
         }
 
         if (basketRecord.count > 0) {
@@ -61,14 +72,16 @@ export const useBasketStore = defineStore('useBasketStore', () => {
         }
     }
 
-    function changeCount(clientProduct: IClientProductConfigurable, count: number) {
+    function changeCount(product: IClientProductConfigurable, count: number) {
+        const normalizedProduct = structuredClone(toRaw(product));
+
         if (isNaN(count) || count < 0) {
             return;
         }
 
-        const basketRecord = findBasketRecord(clientProduct);
+        const basketRecord = findBasketRecord(normalizedProduct);
         if (!basketRecord) {
-            throw new Error(`Product ${clientProduct.id} not found`);
+            throw new Error(`Product ${product.id} not found`);
         }
 
         basketRecord.count = count;
@@ -92,7 +105,8 @@ export const useBasketStore = defineStore('useBasketStore', () => {
         changeCount,
         isCleared,
         isEmpty,
-        basketRecords: basketRecords as unknown as Readonly<Ref<IBasketRecord[]>>, // pinia-plugin-persistedstate не дружит с утилем readonly из vue3
+        basketRecords: basketRecords as unknown as Readonly<Ref<IBasketRecord[]>>, // pinia-plugin-persistedstate не подружился с утилем readonly из vue3
     };
-}, { persist: true },
-);
+
+//}, { persist: true })
+});

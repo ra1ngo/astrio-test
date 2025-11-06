@@ -67,9 +67,10 @@ const selectedVariantSizeLabel = computed(() => {
 }
 
 .basket-table-cell-product__info-variant {
+  margin-top: 4px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 2px;
 }
 
 .basket-table-cell-product__info-variant-label {

@@ -5,45 +5,75 @@
       class="product-card-configurable__base"
       @click="onClickProduct(product)"
     />
+
     <div class="product-card-configurable__options">
-<!--      <div class="product-card-configurable__options-list">-->
-<!--        <ProductCardConfigurableOptionColor-->
-<!--          v-for="{ option, state } in colorOptions"-->
-<!--          :key="option.value_index"-->
-<!--          :option="option"-->
-<!--          :state="state"-->
-<!--          @click="selectColorOption(option)"-->
-<!--        />-->
-<!--      </div>-->
-<!--      <div class="product-card-configurable__options-list">-->
-<!--        <ProductCardConfigurableOptionSize-->
-<!--            v-for="{ option, state } in sizeOptions"-->
-<!--            :key="option.value_index"-->
-<!--            :option="option"-->
-<!--            :state="state"-->
-<!--            @click="selectSizeOption(option)"-->
-<!--        />-->
-<!--      </div>-->
+      <div class="product-card-configurable__options-list">
+        <ProductCardConfigurableOptionColor
+            v-for="option in colorOptions"
+            :key="option.value_index"
+            :option="option"
+            :state="option.state"
+            @click="onClickOption(option.value_index)"
+        />
+      </div>
+      <div class="product-card-configurable__options-list">
+        <ProductCardConfigurableOptionSize
+            v-for="option in sizeOptions"
+            :key="option.value_index"
+            :option="option"
+            :state="option.state"
+            @click="onClickOption(option.value_index)"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { IApiProductConfigurableOptionValue } from '@/types/apiProductConfigurable';
-import type { IClientProductConfigurable } from '@/types/clientProductConfigurable';
-import type { ConfigureProductPayload } from '@/types/configureProductPayload';
 import ProductCardConfigurableOptionColor from './ProductCardConfigurableOptionColor.vue';
+import type { ConfigureProductPayload } from '@/composables/useProductsMappedConfigured';
+import type {IApiProductConfigurableOptionValue, IApiProductConfigurableVariant} from '@/types/apiProductConfigurable';
 import ProductCardConfigurableOptionSize from './ProductCardConfigurableOptionSize.vue';
+import type { IClientProductConfigurable } from '@/types/clientProductConfigurable';
+import {useConfigureProduct} from '../composables/useConfigureProduct';
 
 const { product } = defineProps<{
   product: IClientProductConfigurable;
 }>();
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   (eventName: 'onClickProduct', product: IClientProductConfigurable): void,
   (eventName: 'configureProduct', payload: ConfigureProductPayload): void,
 }>();
 
+//const colorOptions = computed(() => product.configurable_options?.filter(c => c.attribute_code === 'color').at(0)?.values);
+//const sizeOptions = computed(() => product.configurable_options?.filter(c => c.attribute_code === 'size').at(0)?.values);
+
+const {
+  toggleOption,
+  colorOptions,
+  sizeOptions,
+  availableVariants,
+} = useConfigureProduct(product);
+
+function onClickOption(optionId: number) {
+  toggleOption(optionId);
+
+  emits('configureProduct', {
+    productId: product.id,
+    selectedVariant: availableVariants.value?.length == 1 ? availableVariants.value.at(0) : undefined,
+  });
+
+
+  // if (availableVariants.value && availableVariants.value?.length == 1) {
+  //   emits('configureProduct', {
+  //     productId: product.id,
+  //     selectedVariant: availableVariants.value,
+  //   });
+  // }
+}
+
+////////////////////////////
 // const selectedColorOptionId = ref<number | undefined>();
 // const selectedSizeOptionId = ref<number | undefined>();
 // const isOptionsSelected = computed(() => selectedColorOptionId.value && selectedSizeOptionId.value);
@@ -73,7 +103,7 @@ const emit = defineEmits<{
 //   return availableVariants.value?.some(v => v.attributes.some(a => a.code === optionType && a.value_index === optionId));
 // }
 
-const selectColorOption = (option: IApiProductConfigurableOptionValue) => {
+//const selectColorOption = (option: IApiProductConfigurableOptionValue) => {
   // if (selectedColorOptionId.value == option.value_index || !checkAvailableOption(selectedColorOptionId.value, 'color')) {
   //   selectedColorOptionId.value = undefined;
   //
@@ -81,8 +111,8 @@ const selectColorOption = (option: IApiProductConfigurableOptionValue) => {
   // }
   //
   // selectedColorOptionId.value = option.value_index;
-};
-const selectSizeOption = (option: IApiProductConfigurableOptionValue) => {
+//};
+//const selectSizeOption = (option: IApiProductConfigurableOptionValue) => {
   // if (selectedSizeOptionId.value == option.value_index || !checkAvailableOption(selectedSizeOptionId.value, 'size')) {
   //   selectedSizeOptionId.value = undefined;
   //
@@ -90,10 +120,10 @@ const selectSizeOption = (option: IApiProductConfigurableOptionValue) => {
   // }
   //
   // selectedSizeOptionId.value = option.value_index;
-};
+//};
 
 function onClickProduct(product: IClientProductConfigurable) {
-  emit('onClickProduct', product);
+  emits('onClickProduct', product);
 }
 
 // const colorOptions = computed(() => product.configurable_options?.filter(c => c.attribute_code === 'color').at(0)?.values.map(v => ({
@@ -113,7 +143,7 @@ function onClickProduct(product: IClientProductConfigurable) {
 //
 // watch(
 //     configureProductPayload,
-//     (payload) => emit('configureProduct', payload),
+//     (payload) => emits('configureProduct', payload),
 //     { deep: true },
 // );
 </script>
@@ -128,6 +158,9 @@ function onClickProduct(product: IClientProductConfigurable) {
 }
 
 .product-card-configurable__options {
+  margin-top: 18px;
+  margin-bottom: 4px;
+  padding: 0 12px;
   display: flex;
   flex-direction: column;
   gap: 20px;
